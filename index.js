@@ -1,8 +1,11 @@
 const express = require('express')
 const axios = require('axios')
 const userRouter = require('./router/users')
-const filmRouter = require('./router/city')
-const peopleRouter = require('./router/province')
+const getIdKecamatan = require('./router/utils/id_kecamatan')
+const kelurahanRouter = require('./router/kelurahan')
+const cityRouter = require('./router/city')
+const provinceRouter = require('./router/province')
+const kecamatanRouter = require('./router/kecamatan')
 const { response } = require('express')
 const res = require('express/lib/response')
 const app = express()
@@ -125,9 +128,15 @@ app.get('/about', function(request, response) {
 
 app.use(userRouter)
 
-app.use(filmRouter)
+app.use(getIdKecamatan)
 
-app.use(peopleRouter)
+app.use(kelurahanRouter)
+
+app.use(cityRouter)
+
+app.use(provinceRouter)
+
+app.use(kecamatanRouter)
 
 app.listen(8080, function() {
     console.log('Server aman')

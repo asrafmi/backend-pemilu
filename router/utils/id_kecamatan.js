@@ -16,17 +16,17 @@ con.connect((err) => {
 })
 // console.log(con);
 
+function fetchKelurahan(id) {
+    const urlFilm = `https://dev.farizdotid.com/api/daerahindonesia/kelurahan?id_kecamatan=${id}`
+    return axios.get(urlFilm)
+}
+
 function fetchKecamatan(id) {
     const urlFilm = `https://dev.farizdotid.com/api/daerahindonesia/kecamatan?id_kota=${id}`
     return axios.get(urlFilm)
 }
 
-function fetchKota(id) {
-    const urlFilm = `https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=${id}`
-    return axios.get(urlFilm)
-}
-
-router.route('/kecamatan')
+router.route('/id-kecamatan')
     .get(async function(req,res) {
         var idKota = [
                 1101,
@@ -552,9 +552,7 @@ router.route('/kecamatan')
                 let parsedKecamatan = []
                 console.log(response.data);
                 for (let i = 0; i < response.data.kecamatan.length; i++){
-                    await parsedKecamatan.push({nama : response.data.kecamatan[i].nama,
-                    id_kota : response.data.kecamatan[i].id_kota
-                    })
+                    await parsedKecamatan.push(response.data.kecamatan[i].id)
                 }
                 console.log(parsedKecamatan);
                 await tampungKecamatan.push(parsedKecamatan)
