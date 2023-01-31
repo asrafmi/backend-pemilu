@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_ROOT_HOST: 172.18.0.1
+    ports:
+      - 5500:3306
+    volumes:
+      - ~/docker/mysql/mysql/:/var/lib/mysql/
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 100000000
+    restart: always
+    ports:
+      - 5501:80

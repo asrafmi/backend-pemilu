@@ -1,8 +1,8 @@
 const express = require('express')
 const axios = require('axios')
 const userRouter = require('./router/users')
-const filmRouter = require('./router/films')
-const peopleRouter = require('./router/peoples')
+const filmRouter = require('./router/city')
+const peopleRouter = require('./router/province')
 const { response } = require('express')
 const res = require('express/lib/response')
 const app = express()
@@ -10,14 +10,21 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 const mysql = require('mysql')
 const con = mysql.createConnection({
-    host: "localhost",
+    host: "phpmyadmin/phpmyadmin",
     user:"root",
-    password:"",
-    database:"swapi"
+    password:"12345678",
+    database:"pemilu",
+    port: 5501
 })
 
-function fetchPeople() {
-    const urlPeople = 'https://swapi.dev/api/people'
+con.connect((err) => {
+    if (err) return err
+    console.log('Connected to Mysql');
+})
+// console.log(con);
+
+function fetchProvinsi() {
+    const urlPeople = 'https://dev.farizdotid.com/api/daerahindonesia/provinsi'
     return axios.get(urlPeople)
 }
 
@@ -51,13 +58,7 @@ app.get('/both', function(req,res) {
             }
             res.json({parsedPeople,parsedFilm})
         })
-        .catch((error) => {
-            console.log(error)
-        })
         
-    })
-    .catch((error) => {
-        console.log(error)
     })
 
 })
