@@ -6,11 +6,10 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
-      MYSQL_ROOT_HOST: 172.18.0.1
     ports:
       - 5500:3306
     volumes:
-      - ~/docker/mysql/mysql/:/var/lib/mysql/
+      - ./volumes/mysql/mysql/:/var/lib/mysql/
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:

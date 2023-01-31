@@ -33,7 +33,7 @@ router.route('/provinsi')
             console.log(response.data.provinsi);
             console.log(response.data.provinsi.length);
             for (let i = 0; i < response.data.provinsi.length; i++){
-                parsedProvinsi.push(response.data.provinsi[i].id)
+                parsedProvinsi.push({nama: response.data.provinsi[i].nama})
             }
             res.json(parsedProvinsi)
             console.log(parsedProvinsi);
@@ -42,13 +42,12 @@ router.route('/provinsi')
     .post(function(req,res) {
         fetchProvinsi()
         .then((response) => {
-            let parsedPeople = []
-            for (let i = 0; i < response.data.results.length; i++){
-                parsedPeople.push({ name: response.data.results[i].name,
-                height: response.data.results[i].height,
-                mass: response.data.results[i].mass})
+            let parsedProvinsi = []
+            for (let i = 0; i < response.data.provinsi.length; i++){
+                parsedProvinsi.push({ nama: response.data.provinsi[i].nama})
             }
-            parsedPeople.push(req.body)
+            parsedProvinsi.push(req.body)
+            console.log(parsedProvinsi);
             for(let k = 0; k < parsedProvinsi.length; k++){
                 var sql = "INSERT INTO provinsi (nama) VALUES ('" + parsedProvinsi[k].nama + "')"
                 console.log(sql);
@@ -59,7 +58,7 @@ router.route('/provinsi')
             }
             res.send({
                 status: true,
-                data: parsedPeople,
+                data: parsedProvinsi,
                 message: "Data berhasil disimpann",
                 method: req.method,
                 url: req.url
