@@ -2,7 +2,7 @@ const express = require ('express')
 const router = express.Router()
 const axios = require('axios')
 const mysql = require('mysql')
-const tampungIdProvinsi = require('./../db/id/id-provinsi')
+const tampungIdProvinsi = require('../../db/id/id-provinsi')
 const con = mysql.createConnection({
     host: "127.0.0.1",
     user:"root",
@@ -22,20 +22,19 @@ function fetchKota(id) {
     return axios.get(urlFilm)
 }
 
-router.route('/kota')
+router.route('/id-kota')
     .get(async function(req,res) {
         var tampungKota = []
         for (let i = 0; i < tampungIdProvinsi.idProvinsi.length; i++) {
             await fetchKota(tampungIdProvinsi.idProvinsi[i])
             .then(async (response) => {
                 var parsedKota = []
+                console.log(response.data.kota_kabupaten);
                 for (let j = 0; j < response.data.kota_kabupaten.length; j++){
-                    await parsedKota.push({nama: response.data.kota_kabupaten[j].nama, id_provinsi: i+1})
-                    console.log(response.data.kota_kabupaten[j].nama);
+                    await parsedKota.push(response.data.kota_kabupaten[j].id)
                 }
                 // console.log(parsedKota);
                 await tampungKota.push(parsedKota)
-                console.log("tampung kota",tampungKota);
             })
             .catch((error) => {
                 console.log(error)
@@ -51,7 +50,7 @@ router.route('/kota')
             .then(async (response) => {
                 var parsedKota = []
                 for (let j = 0; j < response.data.kota_kabupaten.length; j++){
-                    await parsedKota.push({nama: response.data.kota_kabupaten[j].nama, id_provinsi: response.data.kota_kabupaten[j].id_provinsi, id_kota: response.data.kota_kabupaten[j].id})
+                    await parsedKota.push({nama: response.data.kota_kabupaten[j].nama, id_provinsi: i+1})
                     console.log(response.data.kota_kabupaten[j].nama);
                 }
                 // console.log(parsedKota);
@@ -60,7 +59,7 @@ router.route('/kota')
     
                 for(let j = 0; j < parsedKota.length; j++){
                     // console.log(parsedKota);
-                    var sql = "INSERT INTO kota (id_kota,nama,id_provinsi) VALUES ('" + parsedKota[j].id_kota + "', '" + parsedKota[j].nama + "', '" + parsedKota[j].id_provinsi + "')"
+                    var sql = "INSERT INTO kota (nama,id_provinsi) VALUES ('" + parsedKota[j].nama + "', '" + parsedKota[j].id_provinsi + "')"
                     con.query(sql,function(err,result) {
                         if(err) {
                             console.log(err);

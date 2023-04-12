@@ -25,7 +25,7 @@ function fetchProvinsi() {
     return axios.get(urlPeople)
 }
 
-router.route('/provinsi')
+router.route('/id-provinsi')
     .get(function(req,res) {
         fetchProvinsi()
         .then((response) => {
@@ -33,7 +33,7 @@ router.route('/provinsi')
             console.log(response.data.provinsi);
             console.log(response.data.provinsi.length);
             for (let i = 0; i < response.data.provinsi.length; i++){
-                parsedProvinsi.push({nama: response.data.provinsi[i].nama, id_provinsi: response.data.provinsi[i].id})
+                parsedProvinsi.push(response.data.provinsi[i].id)
             }
             res.json(parsedProvinsi)
             console.log(parsedProvinsi);
@@ -42,15 +42,15 @@ router.route('/provinsi')
     .post(function(req,res) {
         fetchProvinsi()
         .then((response) => {
-            let parsedProvinsi = []
-            for (let i = 0; i < response.data.provinsi.length; i++){
-                parsedProvinsi.push({ nama: response.data.provinsi[i].nama,
-                id_provinsi: response.data.provinsi[i].id})
+            let parsedPeople = []
+            for (let i = 0; i < response.data.results.length; i++){
+                parsedPeople.push({ name: response.data.results[i].name,
+                height: response.data.results[i].height,
+                mass: response.data.results[i].mass})
             }
-            parsedProvinsi.push(req.body)
-            console.log(parsedProvinsi);
-            for(let k = 0; k < parsedProvinsi.length - 1; k++){
-                var sql = "INSERT INTO provinsi (nama,id_provinsi) VALUES ('" + parsedProvinsi[k].nama + "', '" + parsedProvinsi[k].id_provinsi + "')"
+            parsedPeople.push(req.body)
+            for(let k = 0; k < parsedProvinsi.length; k++){
+                var sql = "INSERT INTO provinsi (nama) VALUES ('" + parsedProvinsi[k].nama + "')"
                 console.log(sql);
                 con.query(sql,function(err,result){
                     if (err) console.log("ERROR KETIKA INSERT",err);
@@ -59,7 +59,7 @@ router.route('/provinsi')
             }
             res.send({
                 status: true,
-                data: parsedProvinsi,
+                data: parsedPeople,
                 message: "Data berhasil disimpann",
                 method: req.method,
                 url: req.url

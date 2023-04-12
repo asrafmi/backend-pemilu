@@ -33,7 +33,7 @@ router.route('/kelurahan')
                 console.log(response.data);
                 for (let i = 0; i < response.data.kelurahan.length; i++){
                     await parsedKelurahan.push({nama : response.data.kelurahan[i].nama,
-                    id_kecamatan : response.data.kelurahan[i].id_kecamatan
+                    id_kecamatan : response.data.kelurahan[i].id_kecamatan, id : response.data.kelurahan[i].id
                     })
                 }
                 console.log(parsedKelurahan);
@@ -52,11 +52,11 @@ router.route('/kelurahan')
             .then(async (response) => {
                 var parsedKelurahan = []
                 for (let j = 0; j < response.data.kelurahan.length; j++){
-                    await parsedKelurahan.push({nama: response.data.kelurahan[j].nama, id_kecamatan: i+1})
+                    await parsedKelurahan.push({nama: response.data.kelurahan[j].nama, id_kecamatan : response.data.kelurahan[j].id_kecamatan, id : response.data.kelurahan[j].id})
                 }
                 await tampungKelurahan.push(parsedKelurahan)    
                 for(let j = 0; j < parsedKelurahan.length; j++){
-                    var sql = "INSERT INTO kelurahan (nama,id_kecamatan) VALUES ('" + parsedKelurahan[j].nama + "', '" + parsedKelurahan[j].id_kecamatan + "')"
+                    var sql = "INSERT INTO kelurahan (id_kelurahan,nama,id_kecamatan) VALUES ('" + parsedKelurahan[j].id + "', '" + parsedKelurahan[j].nama + "', '" + parsedKelurahan[j].id_kecamatan + "')"
                     con.query(sql,function(err,result) {
                         if(err) {
                             console.log(err);
