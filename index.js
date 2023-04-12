@@ -1,6 +1,5 @@
 const express = require('express')
 const axios = require('axios')
-const userRouter = require('./router/users')
 const getIdKecamatan = require('./router/utils/id_kecamatan')
 const getIdProvinsi = require('./router/utils/id_province')
 const getIdCity = require('./router/utils/id_city')
@@ -27,7 +26,6 @@ con.connect((err) => {
     console.log('Connected to Mysql');
 })
 
-app.use(userRouter)
 
 app.use(getIdKecamatan)
 app.use(getIdProvinsi)
